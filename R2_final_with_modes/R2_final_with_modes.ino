@@ -361,6 +361,7 @@ void loop() {
       inv_kin(xj1, yj1, PID());
 
     }
+    //Serial.print(" || current = "); Serial.println(angle());
     if (feeder_check[fUp]) {
       feeder_control(0);
     } else if (feeder_check[fDown]) {
@@ -486,8 +487,8 @@ void inv_kin(float X, float Y, float Z) {
   //  Serial.print(" || Y "); Serial.print(y);
   //  Serial.print(" || Z "); Serial.print(z);
 
-  x = -x;
-  y = -y;
+  x = -x;  
+  y = y;
   z = -z;
   //inverse kinematics equation for each motor
   v1 = (0.3333 * z) - (0.66667 * x);
@@ -499,8 +500,8 @@ void inv_kin(float X, float Y, float Z) {
   v2 = constrain(v2, -maxspeed, maxspeed);
   v3 = constrain(v3, -maxspeed, maxspeed);
 
-  roboclaw.DutyM1(128, v3);
-  roboclaw.DutyM2(128, v2);// if on other roboclaw M1 129 -v2
+  roboclaw.DutyM1(128, -v3);
+  roboclaw.DutyM2(128, -v2);// if on other roboclaw M1 129 -v2
   roboclaw.DutyM2(129,  -v1);
 
   //    Serial.print(" || v1 = "); Serial.print(v1);

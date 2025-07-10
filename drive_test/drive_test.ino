@@ -9,7 +9,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  int u=5000;
+  int u=10000;
 roboclaw.DutyM1(128,-u);
 roboclaw.DutyM2(128,-u);
 roboclaw.DutyM2(129,-u);
