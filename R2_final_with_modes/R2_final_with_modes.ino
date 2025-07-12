@@ -11,9 +11,9 @@ int mode4 = 0;
 float v1 = 0, v2 = 0, v3 = 0;
 float maxspeed = 32000;
 
-int b = 41;
-int g = 43;
-int r = 45;
+int b = 45;
+int g = 41;
+int r = 43;
 /////////////////////////////
 
 ////////feeder//////////
@@ -184,35 +184,44 @@ bool ps_read() {
       kd = 50;
     }
 
+    //    if (mode3 == 1) {
+    //      speed1 += 140;
+    //      speed2 = 180;
+    //    }
+
     if (mode3 == 1) {
-      speed1 = 140;
-      speed2 = 180;
+      speed1 -= mult;
+      if (speed1 < 10) speed1 = 10;
     }
-    butt[PS_SQUARE] = 0;
-  }
-
-  if (butt[PS_CIRCLE] == 1) {
-    if (mode1 == 1) {
-      target = target + ((sign) * 15);
-      kp = 27;  //6.7 0.008 9.5
-      ki = 0.0011;
-      kd = 50;
+      butt[PS_SQUARE] = 0;
     }
 
-    if (mode2 == 1) {
-      target = target + ((sign) * 60);
-      kp = 20;  //6.7 0.008 9.5
-      ki = 0.0011;
-      kd = 50;
-    }
+    if (butt[PS_CIRCLE] == 1) {
+      if (mode1 == 1) {
+        target = target + ((sign) * 15);
+        kp = 27;  //6.7 0.008 9.5
+        ki = 0.0011;
+        kd = 50;
+      }
 
-    else if (mode3 == 1) {
-      speed1 = 150;
-      speed2 = 200;
-      //140-180 150-200 145-190 155 215
+      if (mode2 == 1) {
+        target = target + ((sign) * 60);
+        kp = 20;  //6.7 0.008 9.5
+        ki = 0.0011;
+        kd = 50;
+      }
+
+      //    if (mode3 == 1) {
+      //      speed1 = 150;
+      //      speed2 = 200;
+      //      //140-180 150-200 145-190 155 215
+      //    }
+      if (mode3 == 1) {
+        speed2 += mult;
+        if (speed2 > 250) speed2 = 250;
+      }
+      butt[PS_CIRCLE] = 0;
     }
-    butt[PS_CIRCLE] = 0;
-  }
 
   if (butt[PS_TRIANGLE] == 1) {
     if (mode1 == 1) {
@@ -229,9 +238,14 @@ bool ps_read() {
       kd = 50;
     }
 
+    //    if (mode3 == 1) {
+    //      speed1 = 145;
+    //      speed2 = 190;
+    //    }
+
     if (mode3 == 1) {
-      speed1 = 145;
-      speed2 = 190;
+      speed1 += mult;
+      if (speed1 > 250) speed1 = 250;
     }
     butt[PS_TRIANGLE] = 0;
   }
@@ -251,9 +265,14 @@ bool ps_read() {
       kd = 50;
     }
 
+    //    if (mode3 == 1) {
+    //      speed1 = 155;
+    //      speed2 = 215;
+    //    }
+
     if (mode3 == 1) {
-      speed1 = 155;
-      speed2 = 215;
+      speed2 -= mult;
+      if (speed2 < 10) speed2 = 10;
     }
     butt[PS_CROSS] = 0;
   }
@@ -298,6 +317,8 @@ bool ps_read() {
   }
 
   if (butt[PS_R3] == 1) {
+    speed1 = 255;
+    speed2 = 255;
     butt[PS_R3] = 0;
   }
 
@@ -312,6 +333,7 @@ bool ps_read() {
   }
 
 }
+
 //////////setup/////////////
 void setup() {
   ps_setup();
@@ -487,7 +509,7 @@ void inv_kin(float X, float Y, float Z) {
   //  Serial.print(" || Y "); Serial.print(y);
   //  Serial.print(" || Z "); Serial.print(z);
 
-  x = -x;  
+  x = -x;
   y = y;
   z = -z;
   //inverse kinematics equation for each motor
